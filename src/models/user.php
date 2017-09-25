@@ -118,7 +118,7 @@ class User {
     }
     public static function Login($name,$passwd){
         $cnn = new MySQL();
-        $sql = sprintf("SELECT id,firsname,lastname,email FROM users WHERE name='%s'and password=s%",$name,$passwd);
+        $sql = sprintf("SELECT id,name,firstname,lastname,email FROM users WHERE name='%s'and password=sha('%s')",$name,$passwd);
         $rst = $cnn->query($sql);
         $cnn->close();
 
@@ -127,7 +127,7 @@ class User {
         } elseif ($rst->num_rows == 1) {
             $u = $rst->fetch_assoc();
             $user = new User();
-            $user->id = $id;
+            $user->id = $u['id'];
             $user->name = $u['name'];
             $user->firstname = $u['firstname'];
             $user->lastname = $u['lastname'];
